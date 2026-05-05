@@ -21,7 +21,7 @@
 - **lucide-react** - 现代图标库
 - **framer-motion** - 流畅动画效果
 - **recharts** - 数据可视化图表
-- **@tanstack/react-query** - 服务端状态管理
+- **@TanStack/react-query** - 服务端状态管理
 - **react-hook-form** - 高性能表单处理
 - **zod** - TypeScript 优先的模式验证
 - **class-variance-authority** - 样式变体管理
