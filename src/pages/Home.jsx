@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { mockAPI } from "@/data/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { Film, TrendingUp } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,7 +14,7 @@ export default function Home() {
 
   const { data: movies = [], isLoading } = useQuery({
     queryKey: ["movies"],
-    queryFn: () => base44.entities.Movie.filter({ status: "published" }),
+    queryFn: () => mockAPI.Movie.filter({ status: "published" }),
   });
 
   const filtered = useMemo(() => {

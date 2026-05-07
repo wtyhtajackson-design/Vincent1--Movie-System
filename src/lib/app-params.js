@@ -48,7 +48,11 @@ const getAppParams = () => {
 	}
 }
 
-
+// Mock app params - no longer using Base44
 export const appParams = {
-	...getAppParams()
-}
+  appId: 'demo-app',
+  token: null,
+  fromUrl: typeof window !== 'undefined' ? window.location.href : '',
+  functionsVersion: 'latest',
+  appBaseUrl: typeof window !== 'undefined' ? window.location.origin : ''
+};

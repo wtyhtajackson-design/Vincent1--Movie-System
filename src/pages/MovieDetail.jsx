@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { mockAPI } from "@/data/mockData";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import {
@@ -26,7 +26,7 @@ export default function MovieDetail() {
   const { data: movie, isLoading: movieLoading } = useQuery({
     queryKey: ["movie", movieId],
     queryFn: async () => {
-      const movies = await base44.entities.Movie.filter({ id: movieId });
+      const movies = await mockAPI.Movie.filter({ id: movieId });
       return movies[0];
     },
     enabled: !!movieId,
@@ -34,13 +34,13 @@ export default function MovieDetail() {
 
   const { data: reviews = [] } = useQuery({
     queryKey: ["reviews", movieId],
-    queryFn: () => base44.entities.Review.filter({ movie_id: movieId }, "-created_date"),
+    queryFn: () => mockAPI.Review.filter({ movie_id: movieId }, "-created_date"),
     enabled: !!movieId,
   });
 
   const { data: favorites = [] } = useQuery({
     queryKey: ["favorites"],
-    queryFn: () => base44.entities.Favorite.list(),
+    queryFn: () => mockAPI.Favorite.list(),
   });
 
   const isFavorited = favorites.some((f) => f.movie_id === movieId);
@@ -49,9 +49,9 @@ export default function MovieDetail() {
     mutationFn: async () => {
       if (isFavorited) {
         const fav = favorites.find((f) => f.movie_id === movieId);
-        await base44.entities.Favorite.delete(fav.id);
+        await mockAPI.Favorite.delete(fav.id);
       } else {
-        await base44.entities.Favorite.create({
+        await mockAPI.Favorite.create({
           movie_id: movieId,
           movie_title: movie.title,
           movie_poster: movie.poster_url,
@@ -68,8 +68,8 @@ export default function MovieDetail() {
 
   const reviewMutation = useMutation({
     mutationFn: async () => {
-      const user = await base44.auth.me();
-      await base44.entities.Review.create({
+      const user = { full_name: "当前用户", email: "user@example.com" };
+      await mockAPI.Review.create({
         movie_id: movieId,
         movie_title: movie.title,
         rating: newRating,
@@ -79,7 +79,7 @@ export default function MovieDetail() {
       // Update movie average rating
       const allReviews = [...reviews, { rating: newRating }];
       const avgRating = allReviews.reduce((s, r) => s + r.rating, 0) / allReviews.length;
-      await base44.entities.Movie.update(movieId, {
+      await mockAPI.Movie.update(movieId, {
         rating: Math.round(avgRating * 10) / 10,
         rating_count: allReviews.length,
       });

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { mockAPI } from "@/data/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { BarChart3, Film, Star, TrendingUp, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,12 +16,12 @@ const COLORS = ["#0ea5e9", "#8b5cf6", "#22c55e", "#f59e0b", "#ef4444", "#ec4899"
 export default function Statistics() {
   const { data: movies = [], isLoading } = useQuery({
     queryKey: ["movies"],
-    queryFn: () => base44.entities.Movie.list(),
+    queryFn: () => mockAPI.Movie.list(),
   });
 
   const { data: reviews = [] } = useQuery({
     queryKey: ["all-reviews"],
-    queryFn: () => base44.entities.Review.list(),
+    queryFn: () => mockAPI.Review.list(),
   });
 
   const stats = useMemo(() => {

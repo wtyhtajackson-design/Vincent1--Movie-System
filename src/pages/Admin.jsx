@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { mockAPI } from "@/data/mockData";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Settings, Plus, Pencil, Trash2, Film, Star, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,11 +25,11 @@ export default function Admin() {
 
   const { data: movies = [], isLoading } = useQuery({
     queryKey: ["admin-movies"],
-    queryFn: () => base44.entities.Movie.list("-created_date"),
+    queryFn: () => mockAPI.Movie.list("-created_date"),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Movie.create(data),
+    mutationFn: (data) => mockAPI.Movie.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-movies"] });
       queryClient.invalidateQueries({ queryKey: ["movies"] });
@@ -39,7 +39,7 @@ export default function Admin() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Movie.update(id, data),
+    mutationFn: ({ id, data }) => mockAPI.Movie.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-movies"] });
       queryClient.invalidateQueries({ queryKey: ["movies"] });
@@ -50,7 +50,7 @@ export default function Admin() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Movie.delete(id),
+    mutationFn: (id) => mockAPI.Movie.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-movies"] });
       queryClient.invalidateQueries({ queryKey: ["movies"] });

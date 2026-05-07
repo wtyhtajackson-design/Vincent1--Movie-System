@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { mockAPI } from "@/data/mockData";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Heart, Trash2, Star, Film } from "lucide-react";
@@ -15,11 +15,11 @@ export default function Favorites() {
 
   const { data: favorites = [], isLoading } = useQuery({
     queryKey: ["favorites"],
-    queryFn: () => base44.entities.Favorite.list("-created_date"),
+    queryFn: () => mockAPI.Favorite.list("-created_date"),
   });
 
   const removeMutation = useMutation({
-    mutationFn: (id) => base44.entities.Favorite.delete(id),
+    mutationFn: (id) => mockAPI.Favorite.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["favorites"] });
       toast({ title: "已取消收藏" });
