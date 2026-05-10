@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { mockAPI } from "@/data/mockData";
+import React, { useState, useMemo, useEffect } from "react";
+import { getMovies } from "@/api/movieApi";
 import { useQuery } from "@tanstack/react-query";
 import { Film, TrendingUp } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,11 +11,24 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [genre, setGenre] = useState("全部");
   const [sortBy, setSortBy] = useState("newest");
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { data: movies = [], isLoading } = useQuery({
-    queryKey: ["movies"],
-    queryFn: () => mockAPI.Movie.filter({ status: "published" }),
-  });
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getMovies();
+        console.log(data);
+        setMovies(data);
+      } catch (error) {
+        console.error("Failed to fetch movies:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const filtered = useMemo(() => {
     let result = [...movies];
